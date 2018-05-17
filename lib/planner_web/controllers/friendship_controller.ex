@@ -6,7 +6,7 @@ defmodule PlannerWeb.FriendshipController do
 
   action_fallback PlannerWeb.FallbackController
 
-  def index(conn, %{"user_id" => user_id}) do
+  def show(conn, %{"id" => user_id}) do
     friendships = Accounts.list_friendships(user_id)
     render(conn, "index.json", friendships: friendships)
   end

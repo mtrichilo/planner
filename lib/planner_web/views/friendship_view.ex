@@ -1,6 +1,7 @@
 defmodule PlannerWeb.FriendshipView do
   use PlannerWeb, :view
   alias PlannerWeb.FriendshipView
+  alias PlannerWeb.UserView
 
   def render("index.json", %{friendships: friendships}) do
     %{data: render_many(friendships, FriendshipView, "friendship.json")}
@@ -12,6 +13,6 @@ defmodule PlannerWeb.FriendshipView do
 
   def render("friendship.json", %{friendship: friendship}) do
     %{user_id: friendship.user_id,
-      friend_id: friendship.friend_id}
+      friend: render_one(friendship.friend, UserView, "user.json")}
   end
 end

@@ -115,6 +115,7 @@ defmodule Planner.Accounts do
   """
   def list_friendships do
     Repo.all(Friendship)
+    |> Repo.preload(:friend)
   end
 
   @doc """
@@ -123,6 +124,7 @@ defmodule Planner.Accounts do
   """
   def list_friendships(user_id) do
     Repo.all(from f in Friendship, where: f.user_id == ^user_id)
+    |> Repo.preload(:friend)
   end
 
   @doc """
@@ -141,6 +143,7 @@ defmodule Planner.Accounts do
   """
   def get_friendship!(user_id, friend_id) do 
     Repo.get_by!(Friendship, user_id: user_id, friend_id: friend_id)
+    |> Repo.preload(:friend)
   end
 
   @doc """
