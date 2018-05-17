@@ -1,8 +1,10 @@
 defmodule Planner.Events.Event do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias Planner.Accounts.User
   alias Planner.Events.Time
+  alias Planner.Events.Location
 
   schema "events" do
     field :description, :string
@@ -12,6 +14,7 @@ defmodule Planner.Events.Event do
     field :private, :boolean, default: true
     belongs_to :host, User
     has_many :times, Time
+    has_many :locations, Location
 
     timestamps()
   end

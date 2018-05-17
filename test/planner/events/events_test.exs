@@ -138,4 +138,72 @@ defmodule Planner.EventsTest do
       assert %Ecto.Changeset{} = Events.change_time(time)
     end
   end
+
+  describe "event_locations" do
+    alias Planner.Events.Location
+
+    @valid_attrs %{city: "some city", name: "some name", state: "some state", street: "some street", zip_code: "some zip_code"}
+    @update_attrs %{city: "some updated city", name: "some updated name", state: "some updated state", street: "some updated street", zip_code: "some updated zip_code"}
+    @invalid_attrs %{city: nil, name: nil, state: nil, street: nil, zip_code: nil}
+
+    def location_fixture(attrs \\ %{}) do
+      {:ok, location} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Events.create_location()
+
+      location
+    end
+
+    test "list_event_locations/0 returns all event_locations" do
+      location = location_fixture()
+      assert Events.list_event_locations() == [location]
+    end
+
+    test "get_location!/1 returns the location with given id" do
+      location = location_fixture()
+      assert Events.get_location!(location.id) == location
+    end
+
+    test "create_location/1 with valid data creates a location" do
+      assert {:ok, %Location{} = location} = Events.create_location(@valid_attrs)
+      assert location.city == "some city"
+      assert location.name == "some name"
+      assert location.state == "some state"
+      assert location.street == "some street"
+      assert location.zip_code == "some zip_code"
+    end
+
+    test "create_location/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Events.create_location(@invalid_attrs)
+    end
+
+    test "update_location/2 with valid data updates the location" do
+      location = location_fixture()
+      assert {:ok, location} = Events.update_location(location, @update_attrs)
+      assert %Location{} = location
+      assert location.city == "some updated city"
+      assert location.name == "some updated name"
+      assert location.state == "some updated state"
+      assert location.street == "some updated street"
+      assert location.zip_code == "some updated zip_code"
+    end
+
+    test "update_location/2 with invalid data returns error changeset" do
+      location = location_fixture()
+      assert {:error, %Ecto.Changeset{}} = Events.update_location(location, @invalid_attrs)
+      assert location == Events.get_location!(location.id)
+    end
+
+    test "delete_location/1 deletes the location" do
+      location = location_fixture()
+      assert {:ok, %Location{}} = Events.delete_location(location)
+      assert_raise Ecto.NoResultsError, fn -> Events.get_location!(location.id) end
+    end
+
+    test "change_location/1 returns a location changeset" do
+      location = location_fixture()
+      assert %Ecto.Changeset{} = Events.change_location(location)
+    end
+  end
 end
