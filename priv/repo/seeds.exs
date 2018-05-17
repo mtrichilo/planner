@@ -12,8 +12,10 @@
 defmodule Seeds do
   alias Planner.Accounts
   alias Planner.Events
+  alias Planner.Polling
 
   def run do
+    # Add test users.
     {:ok, m} = Accounts.create_user(%{"email" => "m@planner.com", "user_name" => "m",
       "password" => "password", "first_name" => "Michael", "last_name" => "Planner"})
     {:ok, p} = Accounts.create_user(%{"email" => "p@planner.com", "user_name" => "p",
@@ -21,9 +23,11 @@ defmodule Seeds do
     {:ok, c} = Accounts.create_user(%{"email" => "c@planner.com", "user_name" => "c",
       "password" => "password", "first_name" => "Christina", "last_name" => "Planner"})
  
+    # Add test friendships.
     Accounts.create_friendship(%{"user_id" => m.id, "friend_id" => p.id})
     Accounts.create_friendship(%{"user_id" => m.id, "friend_id" => c.id})
 
+    # Add a test event.
     {:ok, e1} = Events.create_event(%{"name" => "Paul's Birthday Party", "host_id" => p.id,
       "message" => "Come celebrate Paul!", "description" => "Gifts or no entry."})
     Events.create_time(%{"event_id" => e1.id, "start_date" => Date.utc_today()})
@@ -32,6 +36,7 @@ defmodule Seeds do
     Events.create_guest(%{"event_id" => e1.id, "user_id" => m.id})
     Events.create_guest(%{"event_id" => e1.id, "user_id" => c.id})
 
+    # Add a second test event.
     {:ok, e2} = Events.create_event(%{"message" => "Anyone down for tacos?", 
       "host_id" => m.id, "private" => false})
     Events.create_time(%{"event_id" => e2.id, "start_date" => Date.utc_today(),
@@ -39,6 +44,10 @@ defmodule Seeds do
     Events.create_time(%{"event_id" => e2.id})
     Events.create_location(%{"event_id" => e2.id, "name" => "Amelia's Taqueria"})
     Events.create_location(%{"event_id" => e2.id, "name" => "Chipotle"})
+
+    # Add polling fields.
+    Polling.create_field(%{"field_name" => "event_time"})
+    Polling.create_field(%{"field_name" => "event_location"})
   end
 end
 
