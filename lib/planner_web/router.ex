@@ -13,5 +13,6 @@ defmodule PlannerWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     resources "/friendships", FriendshipController, only: [:show, :create, :delete]
     resources "/events", EventController, except: [:new, :edit]
+    resources "/event_times", TimeController, only: [:create, :update, :delete]
   end
 end

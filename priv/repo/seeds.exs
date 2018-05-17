@@ -24,8 +24,15 @@ defmodule Seeds do
     Accounts.create_friendship(%{"user_id" => m.id, "friend_id" => p.id})
     Accounts.create_friendship(%{"user_id" => m.id, "friend_id" => c.id})
 
-    Events.create_event(%{"name" => "Paul's Birthday Party", "host_id" => p.id,
+    {:ok, e1} = Events.create_event(%{"name" => "Paul's Birthday Party", "host_id" => p.id,
       "message" => "Come celebrate Paul!", "description" => "Gifts or no entry."})
+    Events.create_time(%{"event_id" => e1.id, "start_date" => Date.utc_today()})
+
+    {:ok, e2} = Events.create_event(%{"message" => "Anyone down for tacos?", 
+      "host_id" => m.id, "private" => false})
+    Events.create_time(%{"event_id" => e2.id, "start_date" => Date.utc_today(),
+      "start_time" => Time.utc_now()})
+    Events.create_time(%{"event_id" => e2.id})
   end
 end
 
