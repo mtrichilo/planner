@@ -19,7 +19,7 @@ defmodule Planner.Events do
   """
   def list_events do
     Repo.all(Event)
-    |> Repo.preload([:host, :times, :locations, guests: [:user]])
+    |> Repo.preload([:host, :times, :locations, :polls, guests: [:user]])
   end
 
   @doc """
@@ -38,7 +38,7 @@ defmodule Planner.Events do
   """
   def get_event!(id) do 
     Repo.get!(Event, id)
-    |> Repo.preload([:host, :times, :locations, guests: [:user]])
+    |> Repo.preload([:host, :times, :locations, :polls, guests: [:user]])
   end
 
   @doc """

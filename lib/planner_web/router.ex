@@ -17,5 +17,6 @@ defmodule PlannerWeb.Router do
     resources "/event_locations", LocationController, only: [:create, :update, :delete]
     resources "/event_guests", GuestController, only: [:create, :delete]
     resources "/poll_fields", FieldController, only: [:index]
+    resources "/polls", PollController, only: [:create, :update, :delete]
   end
 end

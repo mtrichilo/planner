@@ -2,7 +2,6 @@ defmodule PlannerWeb.FieldController do
   use PlannerWeb, :controller
 
   alias Planner.Polling
-  alias Planner.Polling.Field
 
   action_fallback PlannerWeb.FallbackController
 

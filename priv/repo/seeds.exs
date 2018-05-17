@@ -46,8 +46,17 @@ defmodule Seeds do
     Events.create_location(%{"event_id" => e2.id, "name" => "Chipotle"})
 
     # Add polling fields.
-    Polling.create_field(%{"field_name" => "event_time"})
-    Polling.create_field(%{"field_name" => "event_location"})
+    {:ok, time} = Polling.create_field(%{"field_name" => "event_time"})
+    {:ok, loc} = Polling.create_field(%{"field_name" => "event_location"})
+
+    # Add a poll to the first event.
+    Polling.create_poll(%{"event_id" => e1.id, "field_id" => time.id})
+    
+    # Add polls to the second event.
+    Polling.create_poll(%{"event_id" => e2.id, "field_id" => time.id, 
+      "multiple_votes" => false})
+    Polling.create_poll(%{"event_id" => e2.id, "field_id" => loc.id,
+      "multiple_votes" => false, "allow_others" => false})
   end
 end
 

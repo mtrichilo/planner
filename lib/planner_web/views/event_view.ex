@@ -5,6 +5,7 @@ defmodule PlannerWeb.EventView do
   alias PlannerWeb.TimeView
   alias PlannerWeb.LocationView
   alias PlannerWeb.GuestView
+  alias PlannerWeb.PollView
 
   def render("index.json", %{events: events}) do
     %{data: render_many(events, EventView, "event.json")}
@@ -24,6 +25,7 @@ defmodule PlannerWeb.EventView do
       host: render_one(event.host, UserView, "user.json"),
       times: render_many(event.times, TimeView, "time.json"),
       locations: render_many(event.locations, LocationView, "location.json"),
-      guests: render_many(event.guests, GuestView, "guest.json")}
+      guests: render_many(event.guests, GuestView, "guest.json"),
+      polls: render_many(event.polls, PollView, "poll.json")}
   end
 end

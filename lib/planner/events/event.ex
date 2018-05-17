@@ -6,6 +6,7 @@ defmodule Planner.Events.Event do
   alias Planner.Events.Time
   alias Planner.Events.Location
   alias Planner.Events.Guest
+  alias Planner.Polling.Poll
 
   schema "events" do
     field :description, :string
@@ -17,6 +18,7 @@ defmodule Planner.Events.Event do
     has_many :times, Time
     has_many :locations, Location
     has_many :guests, Guest
+    has_many :polls, Poll
 
     timestamps()
   end
