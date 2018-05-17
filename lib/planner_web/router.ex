@@ -1,8 +1,11 @@
 defmodule PlannerWeb.Router do
   use PlannerWeb, :router
 
+  alias PlannerWeb.Plugs
+
   pipeline :api do
     plug :accepts, ["json"]
+    plug Plugs.AuthenticateToken
   end
 
   scope "/planner/api/v1", PlannerWeb do
