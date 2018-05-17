@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 defmodule Seeds do
   alias Planner.Accounts
+  alias Planner.Events
 
   def run do
     {:ok, m} = Accounts.create_user(%{"email" => "m@planner.com", "user_name" => "m",
@@ -19,10 +20,12 @@ defmodule Seeds do
       "password" => "password", "first_name" => "Paul", "last_name" => "Planner"})
     {:ok, c} = Accounts.create_user(%{"email" => "c@planner.com", "user_name" => "c",
       "password" => "password", "first_name" => "Christina", "last_name" => "Planner"})
-
-    IO.puts m.id
+ 
     Accounts.create_friendship(%{"user_id" => m.id, "friend_id" => p.id})
     Accounts.create_friendship(%{"user_id" => m.id, "friend_id" => c.id})
+
+    Events.create_event(%{"name" => "Paul's Birthday Party", "host_id" => p.id,
+      "message" => "Come celebrate Paul!", "description" => "Gifts or no entry."})
   end
 end
 

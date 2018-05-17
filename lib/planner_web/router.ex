@@ -11,8 +11,7 @@ defmodule PlannerWeb.Router do
   scope "/planner/api/v1", PlannerWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
-    get "/friendships/:user_id", FriendshipController, :index
-    post "/friendships", FriendshipController, :create
-    delete "/friendships", FriendshipController, :delete
+    resources "/friendships", FriendshipController, only: [:show, :create, :delete]
+    resources "/events", EventController, except: [:new, :edit]
   end
 end
