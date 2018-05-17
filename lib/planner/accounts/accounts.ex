@@ -101,4 +101,106 @@ defmodule Planner.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  alias Planner.Accounts.Friendship
+
+  @doc """
+  Returns the list of friendships.
+
+  ## Examples
+
+      iex> list_friendships()
+      [%Friendship{}, ...]
+
+  """
+  def list_friendships do
+    Repo.all(Friendship)
+  end
+
+  @doc """
+  Returns a list of friendships for the given user.
+
+  """
+  def list_friendships(user_id) do
+    Repo.all(from f in Friendship, where: f.user_id == ^user_id)
+  end
+
+  @doc """
+  Gets a single friendship.
+
+  Raises `Ecto.NoResultsError` if the Friendship does not exist.
+
+  ## Examples
+
+      iex> get_friendship!(123)
+      %Friendship{}
+
+      iex> get_friendship!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_friendship!(user_id, friend_id) do 
+    Repo.get_by!(Friendship, user_id: user_id, friend_id: friend_id)
+  end
+
+  @doc """
+  Creates a friendship.
+
+  ## Examples
+
+      iex> create_friendship(%{field: value})
+      {:ok, %Friendship{}}
+
+      iex> create_friendship(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_friendship(attrs) do
+    Repo.transaction(fn ->
+      with %{"user_id" => user_id, "friend_id" => friend_id} <- attrs do
+        %Friendship{}
+        |> Friendship.changeset(attrs)
+        |> Repo.insert()
+
+        %Friendship{}
+        |> Friendship.changeset(%{"user_id" => friend_id, "friend_id" => user_id})
+        |> Repo.insert()
+      end
+    end)
+  end
+
+  @doc """
+  Deletes a Friendship.
+
+  ## Examples
+
+      iex> delete_friendship(friendship)
+      {:ok, %Friendship{}}
+
+      iex> delete_friendship(friendship)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_friendship(user_id, friend_id) do
+    Repo.transaction(fn ->
+      get_friendship!(user_id, friend_id)
+      |> Repo.delete()
+      
+      get_friendship!(friend_id, user_id)
+      |> Repo.delete()
+    end)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking friendship changes.
+
+  ## Examples
+
+      iex> change_friendship(friendship)
+      %Ecto.Changeset{source: %Friendship{}}
+
+  """
+  def change_friendship(%Friendship{} = friendship) do
+    Friendship.changeset(friendship, %{})
+  end
 end

@@ -19,7 +19,7 @@ defmodule Planner.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:email, :user_name, :password, :first_name, :last_name, :image])
-    |> validate_required([:email, :user_name, :password, :first_name, :last_name, :image])
+    |> validate_required([:email, :user_name, :password, :first_name, :last_name])
     |> validate_length(:password, min: 8)
     |> change(Comeonin.Argon2.add_hash(attrs["password"]))
     |> unique_constraint(:email)

@@ -13,8 +13,7 @@ defmodule PlannerWeb.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       email: user.email,
-      user_name: user.user_name,
-      password_hash: user.password_hash,
+      user_name: user.user_name, 
       first_name: user.first_name,
       last_name: user.last_name,
       image: user.image}
