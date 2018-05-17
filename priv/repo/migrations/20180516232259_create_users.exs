@@ -8,7 +8,7 @@ defmodule Planner.Repo.Migrations.CreateUsers do
       add :password_hash, :string, null: false
       add :first_name, :string, null: false
       add :last_name, :string, null: false
-      add :image, :string, null: false, default: "/images/default.jpg"
+      add :image, :string, null: false, default: "/planner/images/default.jpg"
 
       timestamps()
     end
