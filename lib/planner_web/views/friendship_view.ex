@@ -12,7 +12,6 @@ defmodule PlannerWeb.FriendshipView do
   end
 
   def render("friendship.json", %{friendship: friendship}) do
-    %{user_id: friendship.user_id,
-      friend: render_one(friendship.friend, UserView, "user.json")}
+    %{friend: render_one(friendship.friend, UserView, "user.json")}
   end
 end

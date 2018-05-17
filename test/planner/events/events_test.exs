@@ -206,4 +206,62 @@ defmodule Planner.EventsTest do
       assert %Ecto.Changeset{} = Events.change_location(location)
     end
   end
+
+  describe "event_guests" do
+    alias Planner.Events.Guest
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def guest_fixture(attrs \\ %{}) do
+      {:ok, guest} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Events.create_guest()
+
+      guest
+    end
+
+    test "list_event_guests/0 returns all event_guests" do
+      guest = guest_fixture()
+      assert Events.list_event_guests() == [guest]
+    end
+
+    test "get_guest!/1 returns the guest with given id" do
+      guest = guest_fixture()
+      assert Events.get_guest!(guest.id) == guest
+    end
+
+    test "create_guest/1 with valid data creates a guest" do
+      assert {:ok, %Guest{} = guest} = Events.create_guest(@valid_attrs)
+    end
+
+    test "create_guest/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Events.create_guest(@invalid_attrs)
+    end
+
+    test "update_guest/2 with valid data updates the guest" do
+      guest = guest_fixture()
+      assert {:ok, guest} = Events.update_guest(guest, @update_attrs)
+      assert %Guest{} = guest
+    end
+
+    test "update_guest/2 with invalid data returns error changeset" do
+      guest = guest_fixture()
+      assert {:error, %Ecto.Changeset{}} = Events.update_guest(guest, @invalid_attrs)
+      assert guest == Events.get_guest!(guest.id)
+    end
+
+    test "delete_guest/1 deletes the guest" do
+      guest = guest_fixture()
+      assert {:ok, %Guest{}} = Events.delete_guest(guest)
+      assert_raise Ecto.NoResultsError, fn -> Events.get_guest!(guest.id) end
+    end
+
+    test "change_guest/1 returns a guest changeset" do
+      guest = guest_fixture()
+      assert %Ecto.Changeset{} = Events.change_guest(guest)
+    end
+  end
 end

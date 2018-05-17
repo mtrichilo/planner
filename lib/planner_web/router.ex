@@ -15,5 +15,6 @@ defmodule PlannerWeb.Router do
     resources "/events", EventController, except: [:new, :edit]
     resources "/event_times", TimeController, only: [:create, :update, :delete]
     resources "/event_locations", LocationController, only: [:create, :update, :delete]
+    resources "/event_guests", GuestController, only: [:create, :delete]
   end
 end
