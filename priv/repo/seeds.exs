@@ -30,8 +30,8 @@ defmodule Seeds do
     # Add a test event.
     {:ok, e1} = Events.create_event(%{"name" => "Paul's Birthday Party", "host_id" => p.id,
       "message" => "Come celebrate Paul!", "description" => "Gifts or no entry."})
-    Events.create_time(%{"event_id" => e1.id, "start_date" => Date.utc_today()})
-    Events.create_location(%{"event_id" => e1.id, "street" => "23 Park Street",
+    {:ok, t1} = Events.create_time(%{"event_id" => e1.id, "start_date" => Date.utc_today()})
+    {:ok, l1} = Events.create_location(%{"event_id" => e1.id, "street" => "23 Park Street",
       "city" => "Albany", "state" => "NY", "zip_code" => "12203"})
     Events.create_guest(%{"event_id" => e1.id, "user_id" => m.id})
     Events.create_guest(%{"event_id" => e1.id, "user_id" => c.id})
@@ -39,24 +39,27 @@ defmodule Seeds do
     # Add a second test event.
     {:ok, e2} = Events.create_event(%{"message" => "Anyone down for tacos?", 
       "host_id" => m.id, "private" => false})
-    Events.create_time(%{"event_id" => e2.id, "start_date" => Date.utc_today(),
+    {:ok, t2} = Events.create_time(%{"event_id" => e2.id, "start_date" => Date.utc_today(),
       "start_time" => Time.utc_now()})
-    Events.create_time(%{"event_id" => e2.id})
-    Events.create_location(%{"event_id" => e2.id, "name" => "Amelia's Taqueria"})
-    Events.create_location(%{"event_id" => e2.id, "name" => "Chipotle"})
+    {:ok, t3} = Events.create_time(%{"event_id" => e2.id})
+    {:ok, l2} = Events.create_location(%{"event_id" => e2.id, "name" => "Amelia's Taqueria"})
+    {:ok, l3} = Events.create_location(%{"event_id" => e2.id, "name" => "Chipotle"})
 
     # Add polling fields.
     {:ok, time} = Polling.create_field(%{"field_name" => "event_time"})
     {:ok, loc} = Polling.create_field(%{"field_name" => "event_location"})
 
     # Add a poll to the first event.
-    Polling.create_poll(%{"event_id" => e1.id, "field_id" => time.id})
+    {:ok, p1} = Polling.create_poll(%{"event_id" => e1.id, "field_id" => time.id})
+    Polling.create_vote(%{"poll_id" => p1.id, "user_id" => c.id, "option_id" => t1.id})
     
     # Add polls to the second event.
-    Polling.create_poll(%{"event_id" => e2.id, "field_id" => time.id, 
+    {:ok, p2} = Polling.create_poll(%{"event_id" => e2.id, "field_id" => time.id, 
       "multiple_votes" => false})
-    Polling.create_poll(%{"event_id" => e2.id, "field_id" => loc.id,
+    {:ok, p3} = Polling.create_poll(%{"event_id" => e2.id, "field_id" => loc.id,
       "multiple_votes" => false, "allow_others" => false})
+    Polling.create_vote(%{"poll_id" => p2.id, "user_id" => m.id, "option_id" => t2.id})
+    Polling.create_vote(%{"poll_id" => p3.id, "user_id" => m.id, "option_id" => l3.id})
   end
 end
 

@@ -6,6 +6,11 @@ defmodule PlannerWeb.PollController do
 
   action_fallback PlannerWeb.FallbackController
 
+  def index(conn, _params) do
+    polls = Polling.list_polls()
+    render(conn, "index.json", polls: polls)
+  end
+
   def create(conn, %{"poll" => poll_params}) do
     with {:ok, %Poll{} = poll} <- Polling.create_poll(poll_params) do
       conn
@@ -13,6 +18,11 @@ defmodule PlannerWeb.PollController do
       |> put_resp_header("location", poll_path(conn, :show, poll))
       |> render("show.json", poll: poll)
     end
+  end
+
+  def show(conn, %{"id" => id}) do
+    poll = Polling.get_poll!(id)
+    render(conn, "show.json", poll: poll)
   end
 
   def update(conn, %{"id" => id, "poll" => poll_params}) do

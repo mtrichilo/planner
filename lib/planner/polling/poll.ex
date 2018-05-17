@@ -4,12 +4,14 @@ defmodule Planner.Polling.Poll do
 
   alias Planner.Events.Event
   alias Planner.Polling.Field
+  alias Planner.Polling.Vote
 
   schema "polls" do
     field :allow_others, :boolean, default: true
     field :multiple_votes, :boolean, default: true
     belongs_to :event, Event
     belongs_to :field, Field
+    has_many :votes, Vote
 
     timestamps()
   end

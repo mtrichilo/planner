@@ -134,10 +134,10 @@ defmodule Planner.Accounts do
 
   ## Examples
 
-      iex> get_friendship!(123)
+      iex> get_friendship!(123, 231)
       %Friendship{}
 
-      iex> get_friendship!(456)
+      iex> get_friendship!(456, 564)
       ** (Ecto.NoResultsError)
 
   """
@@ -177,10 +177,10 @@ defmodule Planner.Accounts do
 
   ## Examples
 
-      iex> delete_friendship(friendship)
+      iex> delete_friendship(user_id, friend_id)
       {:ok, %Friendship{}}
 
-      iex> delete_friendship(friendship)
+      iex> delete_friendship(user_id, friend_id)
       {:error, %Ecto.Changeset{}}
 
   """

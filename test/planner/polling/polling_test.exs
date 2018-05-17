@@ -124,4 +124,64 @@ defmodule Planner.PollingTest do
       assert %Ecto.Changeset{} = Polling.change_poll(poll)
     end
   end
+
+  describe "poll_votes" do
+    alias Planner.Polling.Vote
+
+    @valid_attrs %{option_id: 42}
+    @update_attrs %{option_id: 43}
+    @invalid_attrs %{option_id: nil}
+
+    def vote_fixture(attrs \\ %{}) do
+      {:ok, vote} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Polling.create_vote()
+
+      vote
+    end
+
+    test "list_poll_votes/0 returns all poll_votes" do
+      vote = vote_fixture()
+      assert Polling.list_poll_votes() == [vote]
+    end
+
+    test "get_vote!/1 returns the vote with given id" do
+      vote = vote_fixture()
+      assert Polling.get_vote!(vote.id) == vote
+    end
+
+    test "create_vote/1 with valid data creates a vote" do
+      assert {:ok, %Vote{} = vote} = Polling.create_vote(@valid_attrs)
+      assert vote.option_id == 42
+    end
+
+    test "create_vote/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Polling.create_vote(@invalid_attrs)
+    end
+
+    test "update_vote/2 with valid data updates the vote" do
+      vote = vote_fixture()
+      assert {:ok, vote} = Polling.update_vote(vote, @update_attrs)
+      assert %Vote{} = vote
+      assert vote.option_id == 43
+    end
+
+    test "update_vote/2 with invalid data returns error changeset" do
+      vote = vote_fixture()
+      assert {:error, %Ecto.Changeset{}} = Polling.update_vote(vote, @invalid_attrs)
+      assert vote == Polling.get_vote!(vote.id)
+    end
+
+    test "delete_vote/1 deletes the vote" do
+      vote = vote_fixture()
+      assert {:ok, %Vote{}} = Polling.delete_vote(vote)
+      assert_raise Ecto.NoResultsError, fn -> Polling.get_vote!(vote.id) end
+    end
+
+    test "change_vote/1 returns a vote changeset" do
+      vote = vote_fixture()
+      assert %Ecto.Changeset{} = Polling.change_vote(vote)
+    end
+  end
 end

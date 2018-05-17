@@ -115,6 +115,7 @@ defmodule Planner.Polling do
   """
   def list_polls do
     Repo.all(Poll)
+    |> Repo.preload(:votes)
   end
 
   @doc """
@@ -131,7 +132,10 @@ defmodule Planner.Polling do
       ** (Ecto.NoResultsError)
 
   """
-  def get_poll!(id), do: Repo.get!(Poll, id)
+  def get_poll!(id) do 
+    Repo.get!(Poll, id)
+    |> Repo.preload(:votes)
+  end
 
   @doc """
   Creates a poll.
@@ -196,5 +200,112 @@ defmodule Planner.Polling do
   """
   def change_poll(%Poll{} = poll) do
     Poll.changeset(poll, %{})
+  end
+
+  alias Planner.Polling.Vote
+
+  @doc """
+  Returns the list of poll_votes.
+
+  ## Examples
+
+      iex> list_poll_votes()
+      [%Vote{}, ...]
+
+  """
+  def list_poll_votes do
+    Repo.all(Vote)
+  end
+
+  @doc """
+  Returns a list of poll_votes for the given poll.
+
+  """
+  def list_poll_votes(poll_id) do
+    Repo.all(from v in Vote, where: v.poll_id == ^poll_id)
+  end
+
+  @doc """
+  Gets a single vote.
+
+  Raises `Ecto.NoResultsError` if the Vote does not exist.
+
+  ## Examples
+
+      iex> get_vote!(123, 231, 312)
+      %Vote{}
+
+      iex> get_vote!(456, 564, 645)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_vote!(poll_id, user_id, option_id) do
+    Repo.get_by!(Vote, poll_id: poll_id, user_id: user_id, option_id: option_id)
+  end
+
+  @doc """
+  Creates a vote.
+
+  ## Examples
+
+      iex> create_vote(%{field: value})
+      {:ok, %Vote{}}
+
+      iex> create_vote(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_vote(attrs \\ %{}) do
+    %Vote{}
+    |> Vote.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a vote.
+
+  ## Examples
+
+      iex> update_vote(vote, %{field: new_value})
+      {:ok, %Vote{}}
+
+      iex> update_vote(vote, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_vote(%Vote{} = vote, attrs) do
+    vote
+    |> Vote.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Vote.
+
+  ## Examples
+
+      iex> delete_vote(poll_id, user_id, option_id)
+      {:ok, %Vote{}}
+
+      iex> delete_vote(poll_id, user_id, option_id)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_vote(poll_id, user_id, option_id) do
+    get_vote!(poll_id, user_id, option_id)
+    |> Repo.delete()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking vote changes.
+
+  ## Examples
+
+      iex> change_vote(vote)
+      %Ecto.Changeset{source: %Vote{}}
+
+  """
+  def change_vote(%Vote{} = vote) do
+    Vote.changeset(vote, %{})
   end
 end

@@ -26,6 +26,6 @@ defmodule PlannerWeb.EventView do
       times: render_many(event.times, TimeView, "time.json"),
       locations: render_many(event.locations, LocationView, "location.json"),
       guests: render_many(event.guests, GuestView, "guest.json"),
-      polls: render_many(event.polls, PollView, "poll.json")}
+      polls: render_many(event.polls, PollView, "poll_basic.json")}
   end
 end
