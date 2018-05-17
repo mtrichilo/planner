@@ -5,7 +5,7 @@ defmodule PlannerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", PlannerWeb do
+  scope "/planner/api/v1", PlannerWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
   end

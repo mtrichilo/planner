@@ -39,8 +39,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :planner, Planner.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "planner",
+  password: "aPdEpPJRIv0hA6InxQXx",
   database: "planner_dev",
   hostname: "localhost",
   pool_size: 10

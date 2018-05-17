@@ -3,12 +3,12 @@ defmodule Planner.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :email, :string
-      add :user_name, :string
-      add :password_hash, :string
-      add :first_name, :string
-      add :last_name, :string
-      add :image, :string
+      add :email, :string, null: false
+      add :user_name, :string, null: false
+      add :password_hash, :string, null: false
+      add :first_name, :string, null: false
+      add :last_name, :string, null: false
+      add :image, :string, null: false, default: "/images/default.jpg"
 
       timestamps()
     end

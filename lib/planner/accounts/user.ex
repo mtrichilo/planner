@@ -8,6 +8,7 @@ defmodule Planner.Accounts.User do
     field :first_name, :string
     field :image, :string
     field :last_name, :string
+    field :password, :string, virtual: true
     field :password_hash, :string
     field :user_name, :string
 
@@ -17,8 +18,10 @@ defmodule Planner.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :user_name, :password_hash, :first_name, :last_name, :image])
-    |> validate_required([:email, :user_name, :password_hash, :first_name, :last_name, :image])
+    |> cast(attrs, [:email, :user_name, :password, :first_name, :last_name, :image])
+    |> validate_required([:email, :user_name, :password, :first_name, :last_name, :image])
+    |> validate_length(:password, min: 8)
+    |> change(Comeonin.Argon2.add_hash(attrs["password"]))
     |> unique_constraint(:email)
     |> unique_constraint(:user_name)
   end
