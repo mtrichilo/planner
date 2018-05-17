@@ -11,6 +11,11 @@ defmodule PlannerWeb.Endpoint do
     at: "/", from: :planner, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
+  # Serve at "/images" the static files from 
+  # "/var/www/planner/images" directory.
+  plug Plug.Static,
+    at: "/images", from: "/var/www/planner/images"
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
