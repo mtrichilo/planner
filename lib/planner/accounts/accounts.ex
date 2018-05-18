@@ -38,6 +38,22 @@ defmodule Planner.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Gets a single user by the given email.
+
+  """
+  def get_user_by_email!(email) do
+    Repo.get_by!(User, email: email)
+  end
+
+  @doc """
+  Gets a single user by the given username.
+
+  """
+  def get_user_by_user_name!(user_name) do
+    Repo.get_by!(User, user_name: user_name)
+  end
+
+  @doc """
   Creates a user.
 
   ## Examples

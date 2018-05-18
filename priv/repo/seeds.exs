@@ -13,6 +13,7 @@ defmodule Seeds do
   alias Planner.Accounts
   alias Planner.Events
   alias Planner.Polling
+  alias Planner.Messaging
 
   def run do
     # Add test users.
@@ -60,6 +61,14 @@ defmodule Seeds do
       "multiple_votes" => false, "allow_others" => false})
     Polling.create_vote(%{"poll_id" => p2.id, "user_id" => m.id, "option_id" => t2.id})
     Polling.create_vote(%{"poll_id" => p3.id, "user_id" => m.id, "option_id" => l3.id})
+
+    # Add messages.
+    Messaging.create_message(%{"event_id" => e1.id, "user_id" => p.id, 
+      "message" => "Please RSVP soon."})
+    Messaging.create_message(%{"event_id" => e1.id, "user_id" => c.id,
+      "message" => "No."})
+    Messaging.create_message(%{"event_id" => e2.id, "user_id" => m.id,
+      "message" => "Guys, I'm so hungry."})
   end
 end
 
