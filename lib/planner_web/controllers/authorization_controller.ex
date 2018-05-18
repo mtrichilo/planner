@@ -4,6 +4,15 @@ defmodule PlannerWeb.AuthorizationController do
   alias Planner.Accounts
   alias Planner.Accounts.User
 
+  def register(conn, %{"user" => user_params}) do
+    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", user_path(conn, :show, user))
+      |> login(user, user_params["password"])
+    end
+  end
+
   def login(conn, %{"login" => %{"email" => email, "password" => password}}) do
     user = Accounts.get_user_by_email!(email)
     login(conn, user, password)
